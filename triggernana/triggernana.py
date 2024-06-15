@@ -2,20 +2,11 @@ import pyautogui
 import pyscreenshot as ImageGrab
 import keyboard
 import time
-import subprocess
-import random  # Добавили модуль для работы со случайными числами
+import random
 
 # Список целевых цветов
 target_colors = []
 is_running = True
-
-def is_process_running(process_name):
-    """Проверка, запущен ли процесс с заданным именем"""
-    try:
-        output = subprocess.check_output(['tasklist', '/fi', f'imagename eq {process_name}']).decode('cp866')
-        return process_name.lower() in output.lower()
-    except subprocess.CalledProcessError:
-        return False
 
 def get_color(x, y):
     """Получить цвет пикселя по координатам (x, y)"""
@@ -43,26 +34,17 @@ def find_color_and_click(region):
                 # Добавляем разброс в клике
                 offset_x = random.randint(-100, 100)
                 offset_y = random.randint(-100, 100)
-                pyautogui.click(region[0] + x + offset_x, region[1] + y + offset_y)
+                pyautogui.click(region[0] + x + offset_x, region[1] + y + offset_y, interval=0)  # Убираем задержку
                 return True
     return False
 
-def main(region, interval=0.1):
+def main(region):
     """Главная функция, выполняющая поиск и клик по цвету"""
     global is_running
-
-    print("Checking if banana.exe is running...")
-    if not is_process_running('banana.exe'):
-        print("banana.exe is not running. Exiting...")
-        return
 
     print("Entering main loop...")
 
     while is_running:
-        if not is_process_running('banana.exe'):
-            print("banana.exe is not running. Exiting...")
-            break
-
         if keyboard.is_pressed('p'):
             print("P key pressed.")
             add_color_under_cursor()
@@ -75,10 +57,6 @@ def main(region, interval=0.1):
         if keyboard.is_pressed('s'):
             print("S key pressed. Emergency stop activated. Script stopped.")
             is_running = False
-
-        time.sleep(interval)
-
-    print("Script ended.")
 
 if __name__ == "__main__":
     # Задайте область поиска в формате (лево, верх, право, низ)
