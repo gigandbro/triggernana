@@ -4,6 +4,12 @@ import keyboard
 import time
 import random
 
+# Устанавливаем скорость перемещения курсора
+pyautogui.FAILSAFE = True  # Активируем защиту от случайного движения в углы экрана
+pyautogui.PAUSE = 0.1  # Задержка между действиями pyautogui
+pyautogui.MINIMUM_DURATION = 0  # Минимальное время перемещения
+pyautogui.MINIMUM_SLEEP = 0  # Минимальное время ожидания
+
 # Список целевых цветов
 target_colors = []
 is_running = True
@@ -31,10 +37,15 @@ def find_color_and_click(region):
             color = image.getpixel((x, y))
             if color in target_colors:
                 print(f"Found target color {color} at ({x}, {y})")
-                # Добавляем разброс в клике
-                offset_x = random.randint(-100, 100)
-                offset_y = random.randint(-100, 100)
-                pyautogui.click(region[0] + x + offset_x, region[1] + y + offset_y, interval=0)  # Убираем задержку
+                # Используем меньший разброс в координатах
+                offset_x = random.randint(-50, 50)
+                offset_y = random.randint(-50, 50)
+                # Вычисляем новые координаты для перемещения курсора
+                new_x = region[0] + x + offset_x
+                new_y = region[1] + y + offset_y
+                # Перемещаем курсор и выполняем клик
+                pyautogui.moveTo(new_x, new_y, duration=0.001)
+                pyautogui.click()
                 return True
     return False
 
