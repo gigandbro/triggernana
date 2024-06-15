@@ -3,6 +3,7 @@ import pyscreenshot as ImageGrab
 import keyboard
 import time
 import subprocess
+import random  # Добавили модуль для работы со случайными числами
 
 # Список целевых цветов
 target_colors = []
@@ -39,7 +40,10 @@ def find_color_and_click(region):
             color = image.getpixel((x, y))
             if color in target_colors:
                 print(f"Found target color {color} at ({x}, {y})")
-                pyautogui.click(region[0] + x, region[1] + y)
+                # Добавляем разброс в клике
+                offset_x = random.randint(-100, 100)
+                offset_y = random.randint(-100, 100)
+                pyautogui.click(region[0] + x + offset_x, region[1] + y + offset_y)
                 return True
     return False
 
