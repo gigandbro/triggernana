@@ -8,4 +8,6 @@ stop by key S
 start by key P 
 (need be presed by english) 
 
+I am not responsible for your account when receiving a ban
+
 if tou wanna support me >>> buymeacoffe.com/sorryban
